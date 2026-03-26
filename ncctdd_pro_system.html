@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBSIDIAN // OMNISCIENCE v7.1 PRO</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { 
+            --accent: #00f2ff; --theta: #8a63d2; --bg: #030406; --card: #0d1117; 
+            --text: #e6edf3; --danger: #ff7b72; --success: #238636; --gold: #d29922; 
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        
+        /* TERMINAL ACCESS */
+        #access-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #030406; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        .terminal-box { border: 1px solid var(--accent); padding: 40px; text-align: center; background: rgba(0,242,255,0.02); box-shadow: 0 0 30px rgba(0,242,255,0.1); border-radius: 8px; }
+        .t-input { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 12px; text-align: center; margin: 20px 0; outline: none; font-size: 1.2em; letter-spacing: 2px; border-radius: 4px; }
+
+        /* DASHBOARD */
+        #live-view { padding: 20px; display: block; }
+        header { display: flex; justify-content: space-between; align-items: center; background: #0d1117; border: 1px solid #30363d; padding: 15px 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        
+        .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        
+        /* KPI CARDS */
+        .card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid #30363d; text-align: center; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; }
+        .card h4 { margin: 0; font-size: 0.65em; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; }
+        .main-val { font-size: 2.6em; font-weight: 900; margin: 10px 0; transition: 0.5s; }
+        .status-not-met { color: var(--danger); animation: pulse-red 2s infinite; }
+        .status-met { color: var(--success); text-shadow: 0 0 15px var(--success); }
+        .kpi-footer { display: flex; justify-content: space-between; border-top: 1px solid #30363d; margin-top: 10px; padding-top: 10px; font-size: 0.65em; }
+
+        /* SPECIAL MODULES */
+        .predict-box { grid-column: span 2; border: 2px solid var(--gold); background: rgba(210, 153, 34, 0.05); display: flex; align-items: center; justify-content: space-around; }
+        .pacer-container { grid-column: span 2; display: flex; align-items: center; justify-content: center; background: var(--card); border-radius: 12px; border: 1px solid #30363d; }
+        .pacer-circle { width: 50px; height: 50px; border-radius: 50%; border: 3px solid var(--accent); transition: transform 5s ease-in-out; }
+        .expanding { transform: scale(1.8); box-shadow: 0 0 20px var(--accent); }
+
+        /* DIAGNOSTICS */
+        .diag-row { grid-column: span 4; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .diag-card { background: #05070a; border: 1px solid #30363d; padding: 15px; border-radius: 12px; border-left: 6px solid var(--gold); text-align: left; transition: 0.3s; }
+
+        .charts { display: grid; grid-template-rows: 200px 200px; gap: 20px; }
+        .chart-box { background: var(--card); border-radius: 12px; padding: 10px; border: 1px solid #30363d; position: relative; }
+        
+        .btn { cursor: pointer; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
+        .btn-start { background: var(--success); color: white; }
+        .btn-stop { background: var(--danger); color: white; margin-left: 10px; }
+        .btn-report { background: #1f6feb; color: white; margin-left: 10px; }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* REPORT VIEW */
+        #report-view { display: none; }
+        @media print {
+            #live-view, #access-screen { display: none !important; }
+            #report-view { display: block !important; background: white; color: black; padding: 40px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="access-screen">
+    <div class="terminal-box">
+        <h2 style="color:var(--accent)">OBSIDIAN // OMNISCIENCE v7.1</h2>
